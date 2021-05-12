@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace GraphqlAPI.Queries
 {
     [ExtendObjectType(typeof(Query))]
-    public class HelloQuery
+    public class MeQuery
     {
-        public Hello Hello([FromServices] Hello query) => query;
+        public Me Me([FromServices] Me query) => query;   
     }
 }

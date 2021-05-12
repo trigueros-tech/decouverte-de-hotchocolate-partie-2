@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using GraphqlAPI.Queries;
+using HotChocolate;
 using HotChocolate.AspNetCore;
+using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +32,15 @@ namespace GraphqlAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGraphQLServer()
-                .AddQueryType<HelloQuery>();
+                .AddQueryType<Query>()
+                .AddTypes(GetType().Assembly.GetTypes()
+                    .Where(x => typeof(ObjectType).IsAssignableFrom(x) 
+                                || x.GetCustomAttribute<ExtendObjectTypeAttribute>() != null).ToArray())
+                ;
+            
+            services
+                .AddScoped<Me>()
+                .AddScoped<Hello>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,11 +57,7 @@ namespace GraphqlAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGraphQL()
-                    .WithOptions(new GraphQLServerOptions
-                    {
-                        Tool = { Enable = false}
-                    });
+                endpoints.MapGraphQL();
             });
         }
     }
