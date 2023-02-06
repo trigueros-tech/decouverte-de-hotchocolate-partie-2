@@ -1,21 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using GraphqlAPI.Queries;
-using HotChocolate;
-using HotChocolate.AspNetCore;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace GraphqlAPI
 {
@@ -33,10 +24,11 @@ namespace GraphqlAPI
         {
             services.AddGraphQLServer()
                 .AddQueryType<Query>()
+                .AddType<Me>()
                 .AddTypes(GetType().Assembly.GetTypes()
-                    .Where(x => typeof(ObjectType).IsAssignableFrom(x) 
-                                || x.GetCustomAttribute<ExtendObjectTypeAttribute>() != null).ToArray())
-                ;
+                    .Where(x => x.GetCustomAttribute<ExtendObjectTypeAttribute>() != null)
+                    .ToArray()
+                );
             
             services
                 .AddScoped<Me>()

@@ -1,12 +1,10 @@
-using System.Runtime.CompilerServices;
 using HotChocolate.Types;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GraphqlAPI.Queries
 {
     public class Me
     {
-        public string Name  => "Rick Sanchez";
+        public string Name  => "John Doe";
     }
 
     public class MeObjectType : ObjectType<Me>
@@ -14,7 +12,7 @@ namespace GraphqlAPI.Queries
         protected override void Configure(IObjectTypeDescriptor<Me> descriptor)
         {
             descriptor.Field(x => x.Name)
-                .Description("Oui, j'adore Rick & Morty");
+                .Description("Oui, je ne fais pas dans l'originalité.");
             
             base.Configure(descriptor);
         }

@@ -1,7 +1,4 @@
 using HotChocolate;
-using HotChocolate.Types;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GraphqlAPI.Queries
 {
